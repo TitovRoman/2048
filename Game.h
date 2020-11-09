@@ -71,7 +71,6 @@ namespace Game {
 			this->label17->TabIndex = 2;
 			this->label17->Text = L"Score";
 			this->label17->TextAlign = System::Drawing::ContentAlignment::TopCenter;
-			this->label17->Click += gcnew System::EventHandler(this, &GameObj::label17_Click);
 			// 
 			// ScoreLabel
 			// 
@@ -97,7 +96,7 @@ namespace Game {
 			this->button1->TabIndex = 4;
 			this->button1->Text = L"New Game";
 			this->button1->UseVisualStyleBackColor = false;
-			this->button1->Click += gcnew System::EventHandler(this, &GameObj::button1_Click);
+			this->button1->Click += gcnew System::EventHandler(this, &GameObj::buttonNewGame_Click);
 			this->button1->PreviewKeyDown += gcnew System::Windows::Forms::PreviewKeyDownEventHandler(this, &GameObj::button1_PreviewKeyDown);
 			// 
 			// GridPanel
@@ -148,7 +147,6 @@ namespace Game {
 		}
 #pragma endregion
 
-
 	private:
 		int size_ = -1;
 		int score_ = 0;
@@ -157,19 +155,27 @@ namespace Game {
 		int addElementsCount = 1;
 
 		int nextSize = 4;
-		int nextStartCnt = 2;
-		int nextElementCnt = 1;
+		int nextStartCount = 2;
+		int nextElementCount = 1;
+
+		int cubeSize = 100;
+		int cubePadding = 5;
+		int gridPadding = 7;
+		int formPadding = 20;
+		int headSize = 140;
 
 	public:
 		void setSize(int);
 		void setStartElementsCount(int);
 		void setAddElementsCount(int);
 		void newGame();
+
 	private:
 		Generic::List<Generic::List<int>^> numbers;
 		Generic::List<Generic::List<Label^>^> labels_numbers;
 		Generic::Dictionary<int, System::Drawing::Color> scoreToColor;
 		System::Drawing::Color defaultColor = System::Drawing::Color::RosyBrown;
+
 		void initializetionNumbers();
 		void initializationColors();
 
@@ -188,25 +194,27 @@ namespace Game {
 		int countEmptyBox();
 
 
-	private: System::Void label17_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void c5_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		newGame();
-	}
-	private: System::Void Set_Click(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void Game1_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e);
+	private: 
+		System::Void buttonNewGame_Click(System::Object^ sender, System::EventArgs^ e) 
+		{
+			newGame();
+		}
+		System::Void Set_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void Game1_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e);
 
-	private: System::Void Game1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
-	private: System::Void GridPanel_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) {
-		e->IsInputKey = true;
-	}
-	private: System::Void button1_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) {
-		e->IsInputKey = true;
-	}
-	private: System::Void button2_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) {
-		e->IsInputKey = true;
-	}
-	};
+		System::Void Game1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
+
+		System::Void GridPanel_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) 
+		{
+			e->IsInputKey = true;
+		}
+		System::Void button1_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) 
+		{
+			e->IsInputKey = true;
+		}
+		System::Void button2_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) 
+		{
+			e->IsInputKey = true;
+		}
+};
 }

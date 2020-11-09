@@ -2,12 +2,7 @@
 #include "Settings.h"
 #include <Windows.h>
 
-
 using namespace Game;
-
-#include <vector>
-
-//std::vector<std::vector<int>> numbers;
 
 [System::STAThread]
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -30,7 +25,7 @@ void Game::GameObj::setStartElementsCount(int count)
 {
 	if (count >= 1 && count <= 5)
 	{
-		nextStartCnt = count;
+		nextStartCount = count;
 	}
 }
 
@@ -38,18 +33,15 @@ void Game::GameObj::setAddElementsCount(int count)
 {
 	if (count >= 1 && count <= 5)
 	{
-		nextElementCnt = count;
+		nextElementCount = count;
 	}
 }
 
 void Game::GameObj::initializetionNumbers()
 {
-	int cubeSize = 100;
-	int cubePadding = 5;
-	int gridPadding = 7;
 	int gridSize = size_ * (cubeSize + 2 * cubePadding) + 2 * gridPadding;
 	GridPanel->Size = System::Drawing::Size(gridSize, gridSize);
-	this->Size = System::Drawing::Size(gridSize + 40, gridSize + 160);
+	this->Size = System::Drawing::Size(gridSize + formPadding * 2, gridSize + headSize + formPadding);
 
 	System::Drawing::Font^ font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 		static_cast<System::Byte>(204));
@@ -64,9 +56,7 @@ void Game::GameObj::initializetionNumbers()
 			Label^ tmp = labels_numbers[i][j];
 			tmp->BackColor = System::Drawing::Color::LightGray;
 			tmp->Font = (font);
-			tmp->Location = System::Drawing::Point(342, 232);
 			tmp->Margin = System::Windows::Forms::Padding(cubePadding);
-			//tmp->Name = L"c11";
 			tmp->Size = System::Drawing::Size(cubeSize, cubeSize);
 			tmp->TabIndex = 1;
 			tmp->Text = L"";
@@ -96,8 +86,8 @@ void Game::GameObj::initializationColors()
 
 void Game::GameObj::newGame()
 {
-	startElementsCount = nextStartCnt;
-	addElementsCount = nextElementCnt;
+	startElementsCount = nextStartCount;
+	addElementsCount = nextElementCount;
 	score_ = 0;
 
 	if (size_ == nextSize)
@@ -468,8 +458,6 @@ void Game::GameObj::updateView()
 			}
 		}
 	}
-
-
 }
 
 void Game::GameObj::updateScore()
@@ -479,7 +467,6 @@ void Game::GameObj::updateScore()
 
 void Game::GameObj::generateNewValues(int n)
 {
-
 	if (countEmptyBox() < n)
 	{
 		gameOver();
@@ -504,7 +491,6 @@ void Game::GameObj::gameOver()
 	newGame();
 }
 
-
 System::Void Game::GameObj::Set_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	Settings^ settings = gcnew Settings(this);
@@ -520,7 +506,6 @@ System::Void Game::GameObj::Game1_PreviewKeyDown(System::Object^ sender, System:
 
 System::Void Game::GameObj::Game1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 {
-
 	game(e->KeyCode);
 
 	return System::Void();

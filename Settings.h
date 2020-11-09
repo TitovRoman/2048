@@ -10,8 +10,6 @@ namespace Game {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-
-
 	/// <summary>
 	/// Summary for Settings
 	/// </summary>
@@ -186,10 +184,13 @@ namespace Game {
 		}
 #pragma endregion
 
-	private: System::Void buttonCancel_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void buttonCancel_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
 		this->Close();
 	}
-	private: System::Void buttonApply_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	private: System::Void buttonApply_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
 		this->Close();
 		parent_->setSize(Convert::ToInt32(numericSize->Value));
 		parent_->setAddElementsCount(Convert::ToInt32(numericStep->Value));
