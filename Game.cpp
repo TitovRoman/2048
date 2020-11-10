@@ -458,6 +458,7 @@ void Game::GameObj::generateNewValues(int n)
 {
 	if (countEmptyBox() < n)
 	{
+		updateView();
 		gameOver();
 		return;
 	}
