@@ -1,5 +1,5 @@
 #pragma once
-
+#include <random>
 
 namespace Game {
 	using namespace System;
@@ -19,6 +19,7 @@ namespace Game {
 		{
 			InitializeComponent();
 			initializationColors();
+			initializationDistribution();
 			newGame();
 		}
 
@@ -164,6 +165,9 @@ namespace Game {
 		int formPadding = 20;
 		int headSize = 140;
 
+		Random^ rand = gcnew Random();
+		Generic::Dictionary<int, Tuple<double, double>^> distribution;
+
 	public:
 		void setSize(int);
 		void setStartElementsCount(int);
@@ -178,6 +182,8 @@ namespace Game {
 
 		void initializetionNumbers();
 		void initializationColors();
+		void initializationDistribution();
+		int getNewValue();
 
 		void game(System::Windows::Forms::Keys);
 		void updateView();
@@ -192,7 +198,7 @@ namespace Game {
 
 		bool checkMove();
 		int countEmptyBox();
-
+		
 
 	private: 
 		System::Void buttonNewGame_Click(System::Object^ sender, System::EventArgs^ e) 

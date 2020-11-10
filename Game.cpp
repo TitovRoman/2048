@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Settings.h"
 #include <Windows.h>
+#include <random>
 
 using namespace Game;
 
@@ -45,6 +46,7 @@ void Game::GameObj::initializetionNumbers()
 
 	System::Drawing::Font^ font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 		static_cast<System::Byte>(204));
+
 	for (int i = 0; i < size_; ++i)
 	{
 		labels_numbers.Add(gcnew Generic::List<Label^>());
@@ -82,6 +84,12 @@ void Game::GameObj::initializationColors()
 	scoreToColor[1024] = System::Drawing::Color::DarkOrange;
 	scoreToColor[2048] = System::Drawing::Color::Sienna;
 	scoreToColor[4096] = System::Drawing::Color::SaddleBrown;
+}
+
+void Game::GameObj::initializationDistribution()
+{
+	distribution[2] = gcnew Tuple<double, double>(0.0, 0.9);
+	distribution[4] = gcnew Tuple<double, double>(0.9, 1.0);
 }
 
 void Game::GameObj::newGame()
@@ -294,9 +302,9 @@ bool Game::GameObj::checkMove()
 		return true;
 	}
 
-	for (int i = 1; i < size_ - 1; i += 2)
+	for (int i = 1; i < size_ - 1; i += 1)
 	{
-		for (int j = 1; j < size_ - 1; j += 2)
+		for (int j = 2 - i % 2; j < size_ - 1; j += 2)
 		{
 			int currentValue = numbers[i][j];
 			if (currentValue == numbers[i - 1][j]
@@ -365,35 +373,27 @@ int Game::GameObj::countEmptyBox()
 void Game::GameObj::game(System::Windows::Forms::Keys direction)
 {
 	bool moveFlag = false;
-	switch (direction)
+	if (direction == System::Windows::Forms::Keys::D
+		|| direction == System::Windows::Forms::Keys::Right)
 	{
-	case System::Windows::Forms::Keys::D:
 		moveFlag = rightDirection();
-		break;
-	case System::Windows::Forms::Keys::A:
-		moveFlag = leftDirection();
-		break;
-	case System::Windows::Forms::Keys::W:
-		moveFlag = upDirection();
-		break;
-	case System::Windows::Forms::Keys::S:
-		moveFlag = downDirection();
-		break;
-	case System::Windows::Forms::Keys::Right:
-		moveFlag = rightDirection();
-		break;
-	case System::Windows::Forms::Keys::Left:
-		moveFlag = leftDirection();
-		break;
-	case System::Windows::Forms::Keys::Up:
-		moveFlag = upDirection();
-		break;
-	case System::Windows::Forms::Keys::Down:
-		moveFlag = downDirection();
-		break;
-	default:
-		break;
 	}
+	else if (direction == System::Windows::Forms::Keys::A
+		|| direction == System::Windows::Forms::Keys::Left)
+	{
+		moveFlag = leftDirection();
+	}
+	else if (direction == System::Windows::Forms::Keys::W
+		|| direction == System::Windows::Forms::Keys::Up)
+	{
+		moveFlag = upDirection();
+	}
+	else if (direction == System::Windows::Forms::Keys::S
+		|| direction == System::Windows::Forms::Keys::Down)
+	{
+		moveFlag = downDirection();
+	}
+
 
 	if (moveFlag)
 	{
@@ -440,6 +440,20 @@ void Game::GameObj::updateScore()
 	ScoreLabel->Text = Convert::ToString(score_);
 }
 
+int Game::GameObj::getNewValue()
+{
+	double value = rand->NextDouble();
+	
+	for each(auto x in distribution)
+	{
+		if (x.Value->Item1 <= value && value <= x.Value->Item2)
+		{
+			return x.Key;
+		}
+	}
+	throw gcnew System::NotImplementedException();
+}
+
 void Game::GameObj::generateNewValues(int n)
 {
 	if (countEmptyBox() < n)
@@ -447,7 +461,7 @@ void Game::GameObj::generateNewValues(int n)
 		gameOver();
 		return;
 	}
-	Random^ rand = gcnew Random();
+
 	int x, y;
 	while (n-- > 0)
 	{
@@ -456,7 +470,8 @@ void Game::GameObj::generateNewValues(int n)
 			x = rand->Next(0, size_);
 			y = rand->Next(0, size_);
 		} while (numbers[x][y] != 0);
-		numbers[x][y] = 2;
+
+		numbers[x][y] = getNewValue();
 	}
 }
 
