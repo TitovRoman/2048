@@ -118,33 +118,28 @@ void Game::GameObj::newGame()
 bool Game::GameObj::upDirection()
 {
 	bool moveFlag = false;
+
 	for (int j = 0; j < size_; ++j)
 	{
 		int min_i = 0;
-		int start_i_iter = 0;
-		while (start_i_iter < size_ && numbers[start_i_iter][j] == 0)
-		{
-			++start_i_iter;
-		}
-		if (start_i_iter > 0 && start_i_iter < size_)
-		{
-			numbers[min_i][j] = numbers[start_i_iter][j];
-			numbers[start_i_iter][j] = 0;
-
-			moveFlag = true;
-		}
-
-		for (int i = start_i_iter + 1; i < size_; ++i)
+		for (int i = 1; i < size_; ++i)
 		{
 			if (numbers[i][j] != 0)
 			{
-				if (numbers[i][j] == numbers[min_i][j])
+				if (numbers[min_i][j] == 0)
+				{
+					numbers[min_i][j] = numbers[i][j];
+					numbers[i][j] = 0;
+					moveFlag = true;
+				}
+				else if (numbers[i][j] == numbers[min_i][j])
 				{
 					numbers[min_i][j] *= 2;
 					score_ += numbers[min_i][j];
 					numbers[i][j] = 0;
 
 					moveFlag = true;
+					++min_i;
 				}
 				else
 				{
@@ -157,44 +152,37 @@ bool Game::GameObj::upDirection()
 					}
 					++min_i;
 				}
-
 			}
 		}
 	}
-
 	return moveFlag;
 }
 
 bool Game::GameObj::downDirection()
 {
 	bool moveFlag = false;
+
 	for (int j = 0; j < size_; ++j)
 	{
 		int max_i = size_ - 1;
-		int start_i_iter = size_ - 1;
-		while (start_i_iter >= 0 && numbers[start_i_iter][j] == 0)
-		{
-			--start_i_iter;
-		}
-		if (start_i_iter < size_ - 1 && start_i_iter >= 0)
-		{
-			numbers[max_i][j] = numbers[start_i_iter][j];
-			numbers[start_i_iter][j] = 0;
-
-			moveFlag = true;
-		}
-
-		for (int i = start_i_iter - 1; i >= 0; --i)
+		for (int i = size_ - 2; i >= 0; --i)
 		{
 			if (numbers[i][j] != 0)
 			{
-				if (numbers[i][j] == numbers[max_i][j])
+				if (numbers[max_i][j] == 0)
+				{
+					numbers[max_i][j] = numbers[i][j];
+					numbers[i][j] = 0;
+					moveFlag = true;
+				}
+				else if (numbers[i][j] == numbers[max_i][j])
 				{
 					numbers[max_i][j] *= 2;
 					score_ += numbers[max_i][j];
 					numbers[i][j] = 0;
 
 					moveFlag = true;
+					--max_i;
 				}
 				else
 				{
@@ -207,7 +195,6 @@ bool Game::GameObj::downDirection()
 					}
 					--max_i;
 				}
-
 			}
 		}
 	}
@@ -217,33 +204,28 @@ bool Game::GameObj::downDirection()
 bool Game::GameObj::leftDirection()
 {
 	bool moveFlag = false;
+
 	for (int i = 0; i < size_; ++i)
 	{
 		int min_j = 0;
-		int start_j_iter = 0;
-		while (start_j_iter < size_ && numbers[i][start_j_iter] == 0)
-		{
-			++start_j_iter;
-		}
-		if (start_j_iter > 0 && start_j_iter < size_)
-		{
-			numbers[i][min_j] = numbers[i][start_j_iter];
-			numbers[i][start_j_iter] = 0;
-
-			moveFlag = true;
-		}
-
-		for (int j = start_j_iter + 1; j < size_; ++j)
+		for (int j = 1; j < size_; ++j)
 		{
 			if (numbers[i][j] != 0)
 			{
-				if (numbers[i][j] == numbers[i][min_j])
+				if (numbers[i][min_j] == 0)
+				{
+					numbers[i][min_j] = numbers[i][j];
+					numbers[i][j] = 0;
+					moveFlag = true;
+				}
+				else if (numbers[i][j] == numbers[i][min_j])
 				{
 					numbers[i][min_j] *= 2;
 					score_ += numbers[i][min_j];
 					numbers[i][j] = 0;
 
 					moveFlag = true;
+					++min_j;
 				}
 				else
 				{
@@ -256,7 +238,6 @@ bool Game::GameObj::leftDirection()
 					}
 					++min_j;
 				}
-
 			}
 		}
 	}
@@ -266,33 +247,28 @@ bool Game::GameObj::leftDirection()
 bool Game::GameObj::rightDirection()
 {
 	bool moveFlag = false;
+
 	for (int i = 0; i < size_; ++i)
 	{
 		int max_j = size_ - 1;
-		int start_j_iter = size_ - 1;
-		while (start_j_iter >= 0 && numbers[i][start_j_iter] == 0)
-		{
-			--start_j_iter;
-		}
-		if (start_j_iter < size_ - 1 && start_j_iter >= 0)
-		{
-			numbers[i][max_j] = numbers[i][start_j_iter];
-			numbers[i][start_j_iter] = 0;
-			moveFlag = true;
-
-		}
-
-		for (int j = start_j_iter - 1; j >= 0; --j)
+		for (int j = size_ - 2; j >= 0; --j)
 		{
 			if (numbers[i][j] != 0)
 			{
-				if (numbers[i][j] == numbers[i][max_j])
+				if (numbers[i][max_j] == 0)
+				{
+					numbers[i][max_j] = numbers[i][j];
+					numbers[i][j] = 0;
+					moveFlag = true;
+				}
+				else if (numbers[i][j] == numbers[i][max_j])
 				{
 					numbers[i][max_j] *= 2;
 					score_ += numbers[i][max_j];
 					numbers[i][j] = 0;
 
 					moveFlag = true;
+					--max_j;
 				}
 				else
 				{
@@ -305,7 +281,6 @@ bool Game::GameObj::rightDirection()
 					}
 					--max_j;
 				}
-
 			}
 		}
 	}
